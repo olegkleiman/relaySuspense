@@ -1,0 +1,45 @@
+directive @cacheControl(maxAge: Int, scope: CacheControlScope) on FIELD_DEFINITION | OBJECT | INTERFACE
+
+enum CacheControlScope {
+  PUBLIC
+  PRIVATE
+}
+
+scalar Date
+
+interface INode {
+  id: ID!
+}
+
+type Query {
+  me: User
+}
+
+type Report implements INode {
+  id: ID!
+  month: Int!
+  year: Int!
+  items: [ReportItem]
+}
+
+type ReportItem implements INode {
+  id: ID!
+  day: Int!
+  dayOfWeek: String!
+  entry: Date
+  exit: Date
+  note: String
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+type User implements INode {
+  id: ID!
+  name: String!
+  signature: String
+  stamp: String
+  pictureUrl: String
+  report(month: Int!, year: Int!): Report
+}
+
