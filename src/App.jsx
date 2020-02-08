@@ -1,9 +1,10 @@
 // @flow
-import type { AppQuery } from './__generated__/AppQuery.graphql';
+import type { AppQuery } from './__generated__/AppQuery.graphql.js';
 
 import React from 'react';
 import { graphql, useQuery, useLazyLoadQuery } from 'react-relay/hooks';
 
+import TableReport from './TableReport';
 
 const query = graphql`
         query AppQuery ($year: Int!, $month: Int!){
@@ -14,16 +15,17 @@ const query = graphql`
               id
               month
               year
+               ...TableReport_list
             }
           }
         }
       `;
 
 
-const App = (props) => {
+const App = () => {
 
     const options = {
-        fetchPolicy: 'network-only' //'store-only'
+        fetchPolicy: 'store-or-network' //'network-only' 
     }
 
     const variables = {
@@ -36,7 +38,10 @@ const App = (props) => {
         variables, 
         options);
 
-    return <div>{data.me?.name}</div>
+    return <>
+             <div>{data.me?.name}</div>
+             <TableReport list={data.me.report}/>
+           </>    
 }
 
 export default App;
