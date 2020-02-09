@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { RelayEnvironmentProvider } from 'react-relay/hooks';
 
@@ -9,9 +9,9 @@ import App from './App';
 ReactDOM.createRoot(document.getElementById('root')).render(
     <RelayEnvironmentProvider environment={RelayEnvironment}>
         <ErrorBoundary fallback={({ error }) => `Error: ${error.message + ': ' + error.stack}`}>
-            <React.Suspense fallback={<div>loading suspense</div>}>
+            <Suspense fallback={<div>loading suspense</div>}>
                 <App />
-            </React.Suspense>
+            </Suspense>
         </ErrorBoundary>
     </RelayEnvironmentProvider>    
 )

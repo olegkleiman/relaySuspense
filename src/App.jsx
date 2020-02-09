@@ -2,8 +2,9 @@
 import type { AppQuery } from './__generated__/AppQuery.graphql.js';
 
 import React from 'react';
-import { graphql, useQuery, useLazyLoadQuery } from 'react-relay/hooks';
+import { graphql, fetchQuery, useLazyLoadQuery } from 'react-relay/hooks';
 
+import environment from './Environment';
 import TableReport from './TableReport';
 
 const query = graphql`
@@ -38,9 +39,19 @@ const App = () => {
         variables, 
         options);
 
+    const refresh = () => {
+        fetchQuery(
+            environment,
+            query,
+            variables,
+        )
+        .toPromise();
+    };
+
     return <>
              <div>{data.me?.name}</div>
              <TableReport list={data.me.report}/>
+             <button onClick={() => refresh()}>Re-fetch</button>
            </>    
 }
 
